@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firestore_services.dart';
-
+import 'tabloGoruntuleme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,21 +68,21 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.redAccent,
+                color: Colors.blueGrey,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    "assets/gslogo.png",
-                    width: 80,
-                    height: 80,
+                    "assets/beslenme2.png",
+                    width: 240,
+                    height: 90,
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 17),
                   const Text(
-                    'HOŞGELDİN PRENSES',
+                    'HOŞGELDİNİZ',
                     style: TextStyle(
-                      color: Colors.amberAccent,
+                      color: Colors.white54,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -91,13 +91,22 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ListTile(
-              title: const Text("data ekleme"),
+              title: const Text("Besin Ekleme"),
               onTap: () {
                 _showAddDataDialog(context);
               },
             ),
             ListTile(
-              title: const Text("Mesajlaşma"),
+              title: const Text("Besinleri Görüntüleme ve Silme"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => tabloGoruntuleme()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text("tus_4"),
               onTap: () {},
             ),
           ],
@@ -175,6 +184,41 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _showOverlayMessage(String message) {
+    final overlay = Overlay.of(context);
+    final overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).size.height *
+            0.1, // Ekranın üst kısmına konumlandırma
+        left: MediaQuery.of(context).size.width * 0.1,
+        right: MediaQuery.of(context).size.width * 0.1,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.redAccent,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    // Overlay Mesajını Göster
+    overlay.insert(overlayEntry);
+
+    // 2 Saniye Sonra Mesajı Kaldır
+    Future.delayed(Duration(seconds: 2), () {
+      overlayEntry.remove();
+    });
+  }
+
   // Veri ekleme işlemi
   void _addData() {
     final String foodName = _foodNameController.text.trim();
@@ -185,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _foodNameController.clear();
       _caloriesController.clear();
     } else {
-      print('Lütfen tüm alanları doldurun.');
+      _showOverlayMessage('Lütfen tüm alanları doldurun.');
     }
   }
 }

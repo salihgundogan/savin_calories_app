@@ -61,6 +61,8 @@ flutter:
 
   assets:
     - assets/gslogo.png
+    - assets/beslenme1.jpeg
+    - assets/beslenme2.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
