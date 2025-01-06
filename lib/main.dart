@@ -1,9 +1,11 @@
+import 'package:ak2/veriDuzenleme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firestore_services.dart';
 import 'tabloGoruntuleme.dart';
+import 'veriSilme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,16 +99,34 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: const Text("Besinleri Görüntüleme ve Silme"),
+              title: const Text("Besinleri Görüntüleme"),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => tabloGoruntuleme()),
+                  MaterialPageRoute(builder: (context) => FoodListPage()),
                 );
               },
             ),
             ListTile(
-              title: const Text("tus_4"),
+              title: const Text("Besinleri Silme"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => veriSilme()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text("Besin Düzenleme"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VeriDuzenleme()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text("tus_6"),
               onTap: () {},
             ),
           ],

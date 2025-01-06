@@ -38,4 +38,16 @@ class FirestoreService {
       print('Veri silinirken hata oluştu: $e');
     }
   }
+  // FirestoreService'deki yeni düzenleme fonksiyonu
+  Future<void> updateFood(String docId, String newFoodName, int newCalories) async {
+    try {
+      await _firestore.collection('calorieData').doc(docId).update({
+        'foodName': newFoodName,
+        'calories': newCalories,
+      });
+      print('Veri başarıyla güncellendi!');
+    } catch (e) {
+      print('Veri güncellenirken hata oluştu: $e');
+    }
+  }
 }

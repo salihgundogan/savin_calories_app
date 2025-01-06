@@ -1,50 +1,40 @@
 import 'package:flutter/material.dart';
 import 'firestore_services.dart';
 
-class tabloGoruntuleme extends StatelessWidget {
+class FoodListPage extends StatefulWidget {
+  @override
+  _FoodListPageState createState() => _FoodListPageState();
+}
+
+class _FoodListPageState extends State<FoodListPage> {
   final FirestoreService _firestoreService = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Besinler"),
+        title: const Text('Besinleri Görüntüle'),
       ),
       body: StreamBuilder<List<Map<String, dynamic>>>(
         stream: _firestoreService.getCalorieData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Bir hata oluştu'));
+            return const Center(child: CircularProgressIndicator());
           }
 
-          final foodData = snapshot.data!;
+          if (snapshot.hasError) {
+            return const Center(child: Text('Bir hata oluştu'));
+          }
+
+          final foods = snapshot.data ?? [];
 
           return ListView.builder(
-            itemCount: foodData.length,
+            itemCount: foods.length,
             itemBuilder: (context, index) {
-              final food = foodData[index];
-              final docId = food['documentId'];  // Firestore'dan gelen docId
+              final food = foods[index];
               return ListTile(
                 title: Text(food['foodName']),
                 subtitle: Text('Kalori: ${food['calories']}'),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () async {
-                    try {
-                      await _firestoreService.deleteFood(docId);  // Silme fonksiyonunu çağırma
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Besin başarıyla silindi!')),
-                      );
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Silme işlemi sırasında hata oluştu.')),
-                      );
-                    }
-                  },
-                ),
               );
             },
           );
